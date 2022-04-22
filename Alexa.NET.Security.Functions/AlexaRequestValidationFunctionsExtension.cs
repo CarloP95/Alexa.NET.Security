@@ -1,9 +1,4 @@
 ﻿using Alexa.NET.Request;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace Alexa.NET.Security.Functions
 {
@@ -63,7 +58,7 @@ namespace Alexa.NET.Security.Functions
         /// Gets the SignatureCertChainUrl value from http request headers.
         /// </summary>
         /// <param name="httpRequest">The current http request.</param>
-        private static Uri GetSignatureCertChainUrlFromRequest(HttpRequest httpRequest)
+        private static Uri? GetSignatureCertChainUrlFromRequest(HttpRequest httpRequest)
         {
             httpRequest.Headers.TryGetValue("SignatureCertChainUrl", out var signatureCertChainUrlAsString);
 
@@ -100,7 +95,8 @@ namespace Alexa.NET.Security.Functions
         private static async Task<string> GetBodyFromRequestAsync(HttpRequest httpRequest)
         {
             httpRequest.Body.Position = 0;
-            var body = await httpRequest.ReadAsStringAsync();
+            var reader = new StreamReader(httpRequest.Body, System.Text.Encoding.UTF8);
+            var body = await reader.ReadToEndAsync();
             httpRequest.Body.Position = 0;
 
             return body;
