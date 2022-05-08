@@ -1,4 +1,11 @@
 ﻿using Alexa.NET.Request;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+#nullable enable
 
 namespace Alexa.NET.Security.Functions
 {

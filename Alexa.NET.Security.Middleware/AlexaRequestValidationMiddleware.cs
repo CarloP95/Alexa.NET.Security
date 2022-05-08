@@ -1,4 +1,8 @@
 ﻿using Alexa.NET.Request;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Alexa.NET.Security.Middleware
 {
@@ -30,7 +34,7 @@ namespace Alexa.NET.Security.Middleware
             
             // Verify SignatureCertChainUrl is present
             context.Request.Headers.TryGetValue("SignatureCertChainUrl", out var signatureChainUrl);
-            if (String.IsNullOrWhiteSpace(signatureChainUrl))
+            if (string.IsNullOrWhiteSpace(signatureChainUrl))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -49,7 +53,7 @@ namespace Alexa.NET.Security.Middleware
 
             // Verify SignatureCertChainUrl is Signature
             context.Request.Headers.TryGetValue("Signature", out var signature);
-            if (String.IsNullOrWhiteSpace(signature))
+            if (string.IsNullOrWhiteSpace(signature))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -58,7 +62,7 @@ namespace Alexa.NET.Security.Middleware
             string body = await new StreamReader(context.Request.Body).ReadToEndAsync();
             context.Request.Body.Position = 0;
 
-            if (String.IsNullOrWhiteSpace(body))
+            if (string.IsNullOrWhiteSpace(body))
             {
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
